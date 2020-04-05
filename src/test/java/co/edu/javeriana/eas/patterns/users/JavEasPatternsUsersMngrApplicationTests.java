@@ -1,4 +1,4 @@
-package co.edu.javeriana.eas.patterns.javeaspatternsusersmngr;
+package co.edu.javeriana.eas.patterns.users;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

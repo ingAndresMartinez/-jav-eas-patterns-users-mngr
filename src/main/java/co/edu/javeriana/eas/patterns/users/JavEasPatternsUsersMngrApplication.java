@@ -1,4 +1,4 @@
-package co.edu.javeriana.eas.patterns.javeaspatternsusersmngr;
+package co.edu.javeriana.eas.patterns.users;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
