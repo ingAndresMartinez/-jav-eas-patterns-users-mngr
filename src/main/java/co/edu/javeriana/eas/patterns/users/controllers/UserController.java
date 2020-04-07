@@ -3,26 +3,27 @@ package co.edu.javeriana.eas.patterns.users.controllers;
 import co.edu.javeriana.eas.patterns.common.enums.EExceptionCode;
 import co.edu.javeriana.eas.patterns.users.dtos.AuthenticationInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.LoginParamDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
 import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
-import co.edu.javeriana.eas.patterns.users.services.impl.AuthenticatorServiceImpl;
+import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
+import co.edu.javeriana.eas.patterns.users.services.IAuthenticationService;
+import co.edu.javeriana.eas.patterns.users.services.IHandlerUserCreateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private AuthenticatorServiceImpl authenticatorService;
+    private IAuthenticationService authenticatorService;
+    private IHandlerUserCreateService handlerUserCreateService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationInfoDto> loginUser(@RequestBody LoginParamDto loginParamDto) {
@@ -38,6 +39,24 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PostMapping
+    public ResponseEntity<Void> createUser(@RequestBody UserCreateDto userCreateDto) {
+        LOGGER.info("INICIA PROCESO DE CREACIÓN DE USUARIO [{}]", userCreateDto.getUserCode());
+        try {
+            handlerUserCreateService.defineAndCreateUserFromInputProfile(userCreateDto);
+        } catch (CreateUserException e) {
+            LOGGER.error("ERROR EN CREACION DE USUARIO", e);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        LOGGER.info("FINALIZA PROCESO DE CREACIÓN DE USUARIO [{}]", userCreateDto.getUserCode());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /*@PutMapping
+    public ResponseEntity<Void> updateUser() {
+
+    }*/
+
     private ResponseEntity<AuthenticationInfoDto> handleAuthenticationException(AuthenticationException e) {
         ResponseEntity<AuthenticationInfoDto> errorResponse = null;
         if (e.getExceptionCode() == EExceptionCode.USER_OR_PASSWORD_INVALID) {
@@ -50,7 +69,13 @@ public class UserController {
     }
 
     @Autowired
-    public void setAuthenticatorService(AuthenticatorServiceImpl authenticatorService) {
+    public void setAuthenticatorService(IAuthenticationService authenticatorService) {
         this.authenticatorService = authenticatorService;
     }
+
+    @Autowired
+    public void setHandlerUserCreateService(IHandlerUserCreateService handlerUserCreateService) {
+        this.handlerUserCreateService = handlerUserCreateService;
+    }
+
 }
