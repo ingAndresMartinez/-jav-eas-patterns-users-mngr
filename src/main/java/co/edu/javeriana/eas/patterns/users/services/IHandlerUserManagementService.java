@@ -5,9 +5,9 @@ import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 
-public interface IUserService {
+public interface IHandlerUserManagementService {
 
-    void createUser(UserCreateDto userCreateDto) throws CreateUserException;
+    void defineAndCreateUserFromInputProfile(UserCreateDto userCreateDto) throws CreateUserException;
 
     void updateUser(int userId, UserUpdateDto userUpdateDto) throws UpdateUserException;
 

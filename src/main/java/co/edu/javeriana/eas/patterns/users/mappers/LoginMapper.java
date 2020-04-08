@@ -11,6 +11,7 @@ public class LoginMapper {
 
     public static AuthenticationInfoDto userEntityMapperInAuthenticationInfo(UserEntity userEntity) {
         AuthenticationInfoDto authenticationInfoDto = new AuthenticationInfoDto();
+        authenticationInfoDto.setUserId(userEntity.getId());
         authenticationInfoDto.setUserCode(userEntity.getUserCode());
         authenticationInfoDto.setFirstName(userEntity.getPerson().getFirstName());
         authenticationInfoDto.setLastName(userEntity.getPerson().getLastName());
