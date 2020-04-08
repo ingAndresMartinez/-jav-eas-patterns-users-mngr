@@ -5,7 +5,7 @@ import co.edu.javeriana.eas.patterns.users.enums.EProfile;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class UserCreateDto {
+public class UserCreateDto extends UserUpdateDto {
 
     private int identificationType;
     private int providerId;
@@ -19,19 +19,7 @@ public class UserCreateDto {
     @NotNull(message = "Please provide a identificationNumber")
     @NotEmpty(message = "Please provide a identificationNumber")
     private String identificationNumber;
-    @NotNull(message = "Please provide a email")
-    @NotEmpty(message = "Please provide a email")
-    private String email;
-    @NotNull(message = "Please provide a phoneNumber")
-    @NotEmpty(message = "Please provide a phoneNumber")
-    private String phoneNumber;
-    @NotNull(message = "Please provide a userCode")
-    @NotEmpty(message = "Please provide a userCode")
-    private String userCode;
-    @NotNull(message = "Please provide a password")
-    @NotEmpty(message = "Please provide a password")
-    private String password;
-    
+
     private EProfile profile;
 
     public int getIdentificationType() {
@@ -72,38 +60,6 @@ public class UserCreateDto {
 
     public void setIdentificationNumber(String identificationNumber) {
         this.identificationNumber = identificationNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public EProfile getProfile() {

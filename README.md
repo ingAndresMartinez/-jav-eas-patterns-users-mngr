@@ -24,6 +24,13 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
         <td>HTTP CODES FAILED</td>
     </tr>
     <tr>
+        <td>/user</td>
+        <td>Permite la creación de nuevos usuarios</td>
+        <td>POST</td>
+        <td>201 - CREATED -</td>
+        <td>406 - NOT_ACCEPTABLE - Creción invalida</td>
+    </tr>
+    <tr>
         <td>/user/login</td>
         <td>Permite el Login a la aplicación</td>
         <td>POST</td>
@@ -32,15 +39,15 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
             400 - BAD_REQUEST - Usuario o Clave Invalida</td>
     </tr>
     <tr>
-        <td>/user</td>
-        <td>Permite la creación de nuevos usuarios</td>
-        <td>POST</td>
-        <td>201 - CREATED -</td>
-        <td>406 - NOT_ACCEPTABLE - Creción invalida</td>
+        <td>/user/{userId}</td>
+        <td>Permite la actualización de usuarios</td>
+        <td>PUT</td>
+        <td>202 - ACCEPTED -</td>
+        <td>406 - NOT_ACCEPTABLE - Actualización invalida</td>
     </tr>
     <tr>
-        <td>/user</td>
-        <td>Permite la actualización de usuarios</td>
+        <td>/user/status/{userId}</td>
+        <td>Actualiza el estado de un cliente Activo - Inactivo o viceversa</td>
         <td>PUT</td>
         <td>202 - ACCEPTED -</td>
         <td>406 - NOT_ACCEPTABLE - Actualización invalida</td>

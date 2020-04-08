@@ -4,10 +4,12 @@ import co.edu.javeriana.eas.patterns.common.enums.EExceptionCode;
 import co.edu.javeriana.eas.patterns.users.dtos.AuthenticationInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.LoginParamDto;
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
 import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
+import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 import co.edu.javeriana.eas.patterns.users.services.IAuthenticationService;
-import co.edu.javeriana.eas.patterns.users.services.IHandlerUserCreateService;
+import co.edu.javeriana.eas.patterns.users.services.IHandlerUserManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private IAuthenticationService authenticatorService;
-    private IHandlerUserCreateService handlerUserCreateService;
+    private IHandlerUserManagementService handlerUserCreateService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationInfoDto> loginUser(@Valid @RequestBody LoginParamDto loginParamDto) {
@@ -54,10 +56,27 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    /*@PutMapping
-    public ResponseEntity<Void> updateUser() {
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUser(@PathVariable int userId, @RequestBody UserUpdateDto userUpdateDto) {
+        try {
+            handlerUserCreateService.updateUser(userId, userUpdateDto);
+        } catch (UpdateUserException e) {
+            LOGGER.error("ERROR EN MODIFICACIÓN DE USUARIO", e);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 
-    }*/
+    @PutMapping("/status/{userId}")
+    public ResponseEntity<Void> updateStatusUser(@PathVariable int userId) {
+        try {
+            handlerUserCreateService.updateStatusUser(userId);
+        } catch (UpdateUserException e) {
+            LOGGER.error("ERROR EN MODIFICACIÓN DE USUARIO", e);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 
     private ResponseEntity<AuthenticationInfoDto> handleAuthenticationException(AuthenticationException e) {
         ResponseEntity<AuthenticationInfoDto> errorResponse = null;
@@ -76,7 +95,7 @@ public class UserController {
     }
 
     @Autowired
-    public void setHandlerUserCreateService(IHandlerUserCreateService handlerUserCreateService) {
+    public void setHandlerUserCreateService(IHandlerUserManagementService handlerUserCreateService) {
         this.handlerUserCreateService = handlerUserCreateService;
     }
 

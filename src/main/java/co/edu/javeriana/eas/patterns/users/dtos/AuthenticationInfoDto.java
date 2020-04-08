@@ -2,10 +2,19 @@ package co.edu.javeriana.eas.patterns.users.dtos;
 
 public class AuthenticationInfoDto {
 
+    private int userId;
     private String userCode;
     private String firstName;
     private String lastName;
     private String profile;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getUserCode() {
         return userCode;

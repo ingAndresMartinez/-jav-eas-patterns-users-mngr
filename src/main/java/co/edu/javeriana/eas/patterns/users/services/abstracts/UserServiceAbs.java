@@ -1,5 +1,6 @@
 package co.edu.javeriana.eas.patterns.users.services.abstracts;
 
+import co.edu.javeriana.eas.patterns.common.enums.EExceptionCode;
 import co.edu.javeriana.eas.patterns.persistence.entities.PersonEntity;
 import co.edu.javeriana.eas.patterns.persistence.entities.ProfileEntity;
 import co.edu.javeriana.eas.patterns.persistence.entities.UserEntity;
@@ -8,8 +9,10 @@ import co.edu.javeriana.eas.patterns.persistence.repositories.IPersonRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserStatusRepository;
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
 import co.edu.javeriana.eas.patterns.users.enums.EUserStatus;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
+import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 import co.edu.javeriana.eas.patterns.users.mappers.UserMapper;
 import co.edu.javeriana.eas.patterns.users.services.IUserService;
 import org.slf4j.Logger;
@@ -42,9 +45,25 @@ public abstract class UserServiceAbs implements IUserService {
         LOGGER.info("FINALIZA CREACIÓN DE NUEVO USUARIO [{}] CON PERFIL [{}]", userCreateDto.getUserCode(), milestone);
     }
 
+    @Transactional
     @Override
-    public void updateUser() {
+    public void updateUser(int userId, UserUpdateDto userUpdateDto) throws UpdateUserException {
+        LOGGER.info("INICIA MODIFICACIÓN DE USUARIO CODIGO [{}]", userId);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new UpdateUserException(EExceptionCode.BLOCKING, "Usuario no encontrado para modificar"));
+        UserMapper.userUpdateMapperInUserEntity(userUpdateDto, userEntity);
+        userRepository.save(userEntity);
+        LOGGER.info("FINALIZA MODIFICACIÓN DE USUARIO CODIGO [{}]", userId);
+    }
 
+    @Transactional
+    @Override
+    public void updateStatusUser(int userId) throws UpdateUserException {
+        LOGGER.info("INICIA MODIFICACIÓN DE ESTADO DEL USUARIO CODIGO [{}]", userId);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new UpdateUserException(EExceptionCode.BLOCKING, "Usuario no encontrado para modificar"));
+        userRepository.updateStatus(changeStatus(userEntity.getStatus()), userId);
+        LOGGER.info("FINALIZA MODIFICACIÓN DE ESTADO DEL USUARIO CODIGO [{}]", userId);
     }
 
     protected abstract PersonEntity createEntityPerson(UserCreateDto userCreateDto) throws CreateUserException;
@@ -59,6 +78,13 @@ public abstract class UserServiceAbs implements IUserService {
         userEntity.setPerson(personEntity);
         userEntity.setStatus(userActive);
         return userEntity;
+    }
+
+    private int changeStatus(UserStatusEntity userStatusEntity) {
+        if (userStatusEntity.getId() == EUserStatus.INACTIVE.getStatus()) {
+            return userActive.getId();
+        }
+        return userInactive.getId();
     }
 
     @Autowired
