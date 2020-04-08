@@ -17,13 +17,6 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
 
 <table>
     <tr>
-        <td>LOGIN</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
         <td>PATH</td>
         <td>DESCRIPCIÓN</td>
         <td>VERBO</td>
@@ -36,7 +29,7 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
         <td>POST</td>
         <td>202 - ACCEPTED -</td>
         <td>403 - FORBIDDEN - Usuario Bloqueado <br>
-            400 - BAD_REQUEST - Usuario o Clave Invalida<./td>
+            400 - BAD_REQUEST - Usuario o Clave Invalida</td>
     </tr>
     <tr>
         <td>/user</td>
