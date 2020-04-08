@@ -2,19 +2,36 @@ package co.edu.javeriana.eas.patterns.users.dtos;
 
 import co.edu.javeriana.eas.patterns.users.enums.EProfile;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class UserCreateDto {
 
     private int identificationType;
     private int providerId;
 
+    @NotNull(message = "Please provide a firstName")
+    @NotEmpty(message = "Please provide a firstName")
     private String firstName;
+    @NotNull(message = "Please provide a lastName")
+    @NotEmpty(message = "Please provide a lastName")
     private String lastName;
+    @NotNull(message = "Please provide a identificationNumber")
+    @NotEmpty(message = "Please provide a identificationNumber")
     private String identificationNumber;
+    @NotNull(message = "Please provide a email")
+    @NotEmpty(message = "Please provide a email")
     private String email;
+    @NotNull(message = "Please provide a phoneNumber")
+    @NotEmpty(message = "Please provide a phoneNumber")
     private String phoneNumber;
+    @NotNull(message = "Please provide a userCode")
+    @NotEmpty(message = "Please provide a userCode")
     private String userCode;
+    @NotNull(message = "Please provide a password")
+    @NotEmpty(message = "Please provide a password")
     private String password;
-
+    
     private EProfile profile;
 
     public int getIdentificationType() {
