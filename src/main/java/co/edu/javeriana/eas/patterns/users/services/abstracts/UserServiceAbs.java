@@ -15,6 +15,7 @@ import co.edu.javeriana.eas.patterns.users.services.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 public abstract class UserServiceAbs implements IUserService {
 
@@ -30,6 +31,7 @@ public abstract class UserServiceAbs implements IUserService {
     private IUserRepository userRepository;
     private IUserStatusRepository userStatusRepository;
 
+    @Transactional
     @Override
     public void createUser(UserCreateDto userCreateDto) throws CreateUserException {
         LOGGER.info("INICIA CREACIÓN DE NUEVO USUARIO [{}] CON PERFIL [{}]", userCreateDto.getUserCode(), milestone);
@@ -59,7 +61,6 @@ public abstract class UserServiceAbs implements IUserService {
         return userEntity;
     }
 
-
     @Autowired
     public void setPersonRepository(IPersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -84,4 +85,5 @@ public abstract class UserServiceAbs implements IUserService {
     public void setUserInactive() {
         this.userInactive = userStatusRepository.findById(EUserStatus.INACTIVE.getStatus()).orElse(new UserStatusEntity());
     }
+
 }

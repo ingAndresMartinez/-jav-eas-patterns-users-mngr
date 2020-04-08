@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/user")
@@ -26,7 +28,7 @@ public class UserController {
     private IHandlerUserCreateService handlerUserCreateService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationInfoDto> loginUser(@RequestBody LoginParamDto loginParamDto) {
+    public ResponseEntity<AuthenticationInfoDto> loginUser(@Valid @RequestBody LoginParamDto loginParamDto) {
         LOGGER.info("INICIA PROCESO DE LOGIN PARA EL USUARIO [{}]", loginParamDto.getUserCode());
         AuthenticationInfoDto response;
         try {
@@ -40,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody UserCreateDto userCreateDto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateDto userCreateDto) {
         LOGGER.info("INICIA PROCESO DE CREACIÓN DE USUARIO [{}]", userCreateDto.getUserCode());
         try {
             handlerUserCreateService.defineAndCreateUserFromInputProfile(userCreateDto);
