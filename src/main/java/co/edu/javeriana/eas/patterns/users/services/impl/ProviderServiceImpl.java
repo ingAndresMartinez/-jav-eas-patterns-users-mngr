@@ -30,7 +30,7 @@ public class ProviderServiceImpl extends UserServiceAbs {
         int providerId = userCreateDto.getProviderId();
         ProviderEntity providerEntity = providerRepository.findById(providerId).
                 orElseThrow(() -> new CreateUserException(EExceptionCode.BLOCKING, "No existe el proveedor ingresado"));
-        personEntity.setProviderEntity(providerEntity);
+        personEntity.setProvider(providerEntity);
         return personEntity;
     }
 
