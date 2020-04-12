@@ -20,7 +20,6 @@ public class UserMapper {
         PersonEntity personEntity = new PersonEntity();
         personEntity.setFirstName(userCreateDto.getFirstName());
         personEntity.setLastName(userCreateDto.getLastName());
-        personEntity.setIdentificationType(userCreateDto.getIdentificationType());
         personEntity.setIdentificationNumber(userCreateDto.getIdentificationNumber());
         personEntity.setEmail(userCreateDto.getEmail());
         personEntity.setPhoneNumber(userCreateDto.getPhoneNumber());

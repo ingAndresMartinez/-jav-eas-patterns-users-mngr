@@ -4,6 +4,7 @@ import co.edu.javeriana.eas.patterns.persistence.entities.PersonEntity;
 import co.edu.javeriana.eas.patterns.persistence.entities.ProfileEntity;
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
 import co.edu.javeriana.eas.patterns.users.enums.EProfile;
+import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.services.abstracts.UserServiceAbs;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class ClientServiceImpl extends UserServiceAbs {
     }
 
     @Override
-    protected PersonEntity createEntityPerson(UserCreateDto userCreateDto) {
+    protected PersonEntity createEntityPerson(UserCreateDto userCreateDto) throws CreateUserException {
         return personEntityBase(userCreateDto);
     }
 

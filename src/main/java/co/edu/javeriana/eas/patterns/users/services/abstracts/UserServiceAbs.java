@@ -1,10 +1,8 @@
 package co.edu.javeriana.eas.patterns.users.services.abstracts;
 
 import co.edu.javeriana.eas.patterns.common.enums.EExceptionCode;
-import co.edu.javeriana.eas.patterns.persistence.entities.PersonEntity;
-import co.edu.javeriana.eas.patterns.persistence.entities.ProfileEntity;
-import co.edu.javeriana.eas.patterns.persistence.entities.UserEntity;
-import co.edu.javeriana.eas.patterns.persistence.entities.UserStatusEntity;
+import co.edu.javeriana.eas.patterns.persistence.entities.*;
+import co.edu.javeriana.eas.patterns.persistence.repositories.IIdentificationTypeRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IPersonRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserStatusRepository;
@@ -31,6 +29,7 @@ public abstract class UserServiceAbs implements IUserService {
     protected ProfileEntity profileEntity;
 
     private IPersonRepository personRepository;
+    private IIdentificationTypeRepository identificationTypeRepository;
     private IUserRepository userRepository;
     private IUserStatusRepository userStatusRepository;
 
@@ -68,8 +67,12 @@ public abstract class UserServiceAbs implements IUserService {
 
     protected abstract PersonEntity createEntityPerson(UserCreateDto userCreateDto) throws CreateUserException;
 
-    protected PersonEntity personEntityBase(UserCreateDto userCreateDto) {
-        return UserMapper.userCreateMapperInPersonEntity(userCreateDto);
+    protected PersonEntity personEntityBase(UserCreateDto userCreateDto) throws CreateUserException {
+        IdentificationTypeEntity identificationTypeEntity = identificationTypeRepository.findById(userCreateDto.getIdentificationType())
+                .orElseThrow(() -> new CreateUserException(EExceptionCode.BLOCKING, "No se encuentra el tipo de documento ingresado"));
+        PersonEntity personEntity = UserMapper.userCreateMapperInPersonEntity(userCreateDto);
+        personEntity.setIdentificationType(identificationTypeEntity);
+        return personEntity;
     }
 
     private UserEntity createUserEntity(UserCreateDto userCreateDto, PersonEntity personEntity) {
@@ -85,6 +88,11 @@ public abstract class UserServiceAbs implements IUserService {
             return userActive.getId();
         }
         return userInactive.getId();
+    }
+
+    @Autowired
+    public void setIdentificationTypeRepository(IIdentificationTypeRepository identificationTypeRepository) {
+        this.identificationTypeRepository = identificationTypeRepository;
     }
 
     @Autowired
