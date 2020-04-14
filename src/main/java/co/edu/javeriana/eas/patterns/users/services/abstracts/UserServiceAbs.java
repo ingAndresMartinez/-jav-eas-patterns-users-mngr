@@ -94,7 +94,7 @@ public abstract class UserServiceAbs implements IUserService {
         personInfoDto.setPersonId(userEntity.getPerson().getId());
         personInfoDto.setPhoneNumber(userEntity.getPerson().getPhoneNumber());
         userInfoDto.setPerson(personInfoDto);
-        LOGGER.info("FINALIZA CONSULTA DE USUARIO POR CODIGO CODIGO [{}] -> [{}]", personInfoDto);
+        LOGGER.info("FINALIZA CONSULTA DE USUARIO POR CODIGO CODIGO [{}] -> [{}]", userId, userInfoDto);
         return userInfoDto;
     }
 
