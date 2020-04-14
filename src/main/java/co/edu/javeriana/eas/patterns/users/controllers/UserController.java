@@ -1,10 +1,7 @@
 package co.edu.javeriana.eas.patterns.users.controllers;
 
 import co.edu.javeriana.eas.patterns.common.enums.EExceptionCode;
-import co.edu.javeriana.eas.patterns.users.dtos.AuthenticationInfoDto;
-import co.edu.javeriana.eas.patterns.users.dtos.LoginParamDto;
-import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
-import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.*;
 import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
@@ -28,6 +25,18 @@ public class UserController {
 
     private IAuthenticationService authenticatorService;
     private IHandlerUserManagementService handlerUserCreateService;
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserInfoDto> getUserInformation(@PathVariable int userId) {
+        LOGGER.info("INICIA PROCESO DE CONSULTA DE USUARIO [{}]", userId);
+        try {
+            LOGGER.info("FINALIZA PROCESO DE CONSULTA DE USUARIO [{}]", userId);
+            return new ResponseEntity<>(handlerUserCreateService.getInfoUser(userId), HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            LOGGER.error("ERROR EN CONSULTA DE USUARIO", e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationInfoDto> loginUser(@Valid @RequestBody LoginParamDto loginParamDto) {

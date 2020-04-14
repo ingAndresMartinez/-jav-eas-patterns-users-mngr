@@ -1,7 +1,9 @@
 package co.edu.javeriana.eas.patterns.users.services;
 
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
+import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 
@@ -12,5 +14,7 @@ public interface IHandlerUserManagementService {
     void updateUser(int userId, UserUpdateDto userUpdateDto) throws UpdateUserException;
 
     void updateStatusUser(int userId) throws UpdateUserException;
+
+    UserInfoDto getInfoUser(int userId) throws AuthenticationException;
 
 }
