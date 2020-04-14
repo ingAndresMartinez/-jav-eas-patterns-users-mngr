@@ -1,8 +1,10 @@
 package co.edu.javeriana.eas.patterns.users.services.impl;
 
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
 import co.edu.javeriana.eas.patterns.users.enums.EProfile;
+import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 import co.edu.javeriana.eas.patterns.users.services.IHandlerUserManagementService;
@@ -40,6 +42,11 @@ public class HandlerUserManagementServiceImpl implements IHandlerUserManagementS
     @Override
     public void updateStatusUser(int userId) throws UpdateUserException {
         clientServiceImpl.updateStatusUser(userId);
+    }
+
+    @Override
+    public UserInfoDto getInfoUser(int userId) throws AuthenticationException {
+        return clientServiceImpl.getInfoUser(userId);
     }
 
     @Autowired

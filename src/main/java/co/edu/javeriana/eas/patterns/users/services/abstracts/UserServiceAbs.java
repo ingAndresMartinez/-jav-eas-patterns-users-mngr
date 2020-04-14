@@ -6,9 +6,13 @@ import co.edu.javeriana.eas.patterns.persistence.repositories.IIdentificationTyp
 import co.edu.javeriana.eas.patterns.persistence.repositories.IPersonRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserRepository;
 import co.edu.javeriana.eas.patterns.persistence.repositories.IUserStatusRepository;
+import co.edu.javeriana.eas.patterns.users.dtos.PersonInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.UserCreateDto;
+import co.edu.javeriana.eas.patterns.users.dtos.UserInfoDto;
 import co.edu.javeriana.eas.patterns.users.dtos.UserUpdateDto;
+import co.edu.javeriana.eas.patterns.users.enums.EProfile;
 import co.edu.javeriana.eas.patterns.users.enums.EUserStatus;
+import co.edu.javeriana.eas.patterns.users.exceptions.AuthenticationException;
 import co.edu.javeriana.eas.patterns.users.exceptions.CreateUserException;
 import co.edu.javeriana.eas.patterns.users.exceptions.UpdateUserException;
 import co.edu.javeriana.eas.patterns.users.mappers.UserMapper;
@@ -63,6 +67,35 @@ public abstract class UserServiceAbs implements IUserService {
                 .orElseThrow(() -> new UpdateUserException(EExceptionCode.BLOCKING, "Usuario no encontrado para modificar"));
         userRepository.updateStatus(changeStatus(userEntity.getStatus()), userId);
         LOGGER.info("FINALIZA MODIFICACIÓN DE ESTADO DEL USUARIO CODIGO [{}]", userId);
+    }
+
+    @Override
+    public UserInfoDto getInfoUser(int userId) throws AuthenticationException {
+        LOGGER.info("INICIA CONSULTA DE USUARIO POR CODIGO CODIGO [{}]", userId);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new AuthenticationException(EExceptionCode.BLOCKING, "Usuario no encontrado"));
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.seteUserStatus(userEntity.getStatus().getId() == 0 ? EUserStatus.INACTIVE : EUserStatus.ACTIVE);
+        EProfile eProfile;
+        eProfile = EProfile.PROVIDER;
+        if (userEntity.getProfile().getId() == 1) {
+            eProfile = EProfile.ADMINISTRATOR;
+        }
+        if (userEntity.getProfile().getId() == 1) {
+            eProfile = EProfile.CLIENT;
+        }
+        userInfoDto.setProfile(eProfile);
+        userInfoDto.setUserCode(userEntity.getUserCode());
+        userInfoDto.setUserId(userEntity.getId());
+        PersonInfoDto personInfoDto = new PersonInfoDto();
+        personInfoDto.setEmail(userInfoDto.getPerson().getEmail());
+        personInfoDto.setFirstName(userInfoDto.getPerson().getFirstName());
+        personInfoDto.setLastName(userInfoDto.getPerson().getLastName());
+        personInfoDto.setPersonId(userInfoDto.getPerson().getPersonId());
+        personInfoDto.setPhoneNumber(userInfoDto.getPerson().getPhoneNumber());
+        userInfoDto.setPerson(personInfoDto);
+        LOGGER.info("FINALIZA CONSULTA DE USUARIO POR CODIGO CODIGO [{}] -> [{}]", personInfoDto);
+        return userInfoDto;
     }
 
     protected abstract PersonEntity createEntityPerson(UserCreateDto userCreateDto) throws CreateUserException;

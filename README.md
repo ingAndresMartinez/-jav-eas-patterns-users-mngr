@@ -41,6 +41,13 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
     <tr>
         <td>/user/{userId}</td>
         <td>Permite la actualización de usuarios</td>
+        <td>GET</td>
+        <td>200 - OK -</td>
+        <td>404 - NOT_FOUND - Consulta un cliente por Id</td>
+    </tr>
+    <tr>
+        <td>/user/{userId}</td>
+        <td>Permite la actualización de usuarios</td>
         <td>PUT</td>
         <td>202 - ACCEPTED -</td>
         <td>406 - NOT_ACCEPTABLE - Actualización invalida</td>
