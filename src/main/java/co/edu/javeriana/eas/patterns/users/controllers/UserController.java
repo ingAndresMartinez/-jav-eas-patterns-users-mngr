@@ -30,13 +30,12 @@ public class UserController {
     public ResponseEntity<UserInfoDto> getUserInformation(@PathVariable int userId) {
         LOGGER.info("INICIA PROCESO DE CONSULTA DE USUARIO [{}]", userId);
         try {
-            handlerUserCreateService.getInfoUser(userId);
+            LOGGER.info("FINALIZA PROCESO DE CONSULTA DE USUARIO [{}]", userId);
+            return new ResponseEntity<>(handlerUserCreateService.getInfoUser(userId), HttpStatus.OK);
         } catch (AuthenticationException e) {
             LOGGER.error("ERROR EN CONSULTA DE USUARIO", e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        LOGGER.info("FINALIZA PROCESO DE CONSULTA DE USUARIO [{}]", userId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
