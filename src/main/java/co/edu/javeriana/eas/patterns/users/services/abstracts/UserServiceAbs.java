@@ -88,11 +88,11 @@ public abstract class UserServiceAbs implements IUserService {
         userInfoDto.setUserCode(userEntity.getUserCode());
         userInfoDto.setUserId(userEntity.getId());
         PersonInfoDto personInfoDto = new PersonInfoDto();
-        personInfoDto.setEmail(userInfoDto.getPerson().getEmail());
-        personInfoDto.setFirstName(userInfoDto.getPerson().getFirstName());
-        personInfoDto.setLastName(userInfoDto.getPerson().getLastName());
-        personInfoDto.setPersonId(userInfoDto.getPerson().getPersonId());
-        personInfoDto.setPhoneNumber(userInfoDto.getPerson().getPhoneNumber());
+        personInfoDto.setEmail(userEntity.getPerson().getEmail());
+        personInfoDto.setFirstName(userEntity.getPerson().getFirstName());
+        personInfoDto.setLastName(userEntity.getPerson().getLastName());
+        personInfoDto.setPersonId(userEntity.getPerson().getId());
+        personInfoDto.setPhoneNumber(userEntity.getPerson().getPhoneNumber());
         userInfoDto.setPerson(personInfoDto);
         LOGGER.info("FINALIZA CONSULTA DE USUARIO POR CODIGO CODIGO [{}] -> [{}]", personInfoDto);
         return userInfoDto;
