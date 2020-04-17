@@ -3,6 +3,7 @@ package co.edu.javeriana.eas.patterns.users.dtos;
 public class AuthenticationInfoDto {
 
     private int userId;
+    private int providerId;
     private String userCode;
     private String firstName;
     private String lastName;
@@ -18,6 +19,14 @@ public class AuthenticationInfoDto {
 
     public String getUserCode() {
         return userCode;
+    }
+
+    public int getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(int providerId) {
+        this.providerId = providerId;
     }
 
     public void setUserCode(String userCode) {
