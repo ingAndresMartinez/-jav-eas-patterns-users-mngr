@@ -60,4 +60,3 @@ de diseño, en la Especialización de Arquitectura de Software Empresarial 2020 
         <td>406 - NOT_ACCEPTABLE - Actualización invalida</td>
     </tr>
 </table>
-
